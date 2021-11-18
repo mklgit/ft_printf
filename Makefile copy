@@ -1,0 +1,55 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mirueta- <mirueta-@student.42urduli>       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/10/27 11:09:36 by mirueta-          #+#    #+#              #
+#    Updated: 2021/10/27 11:47:05 by mirueta-         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+NAME	= libftprintf.a
+
+SRCS	= ft_printf.c\
+		  utils1.c\
+		  utils2.c
+
+OBJ		= $(SRCS:.c=.o)
+
+INC		= ft_printf.h
+
+CC		= gcc
+
+CFLAGS	= -Wall -Wextra -Werror
+
+LIBFT	= libft
+
+RM		= rm -f
+
+.c.o: $(SRCS)
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(NAME): $(OBJ)
+				@make -C $(LIBFT)
+				@cp libft/libft.a ./$(NAME)
+				@ar -rcs $(NAME) $(OBJ)
+				@mkdir obj
+				@mv $(OBJ) ./obj
+				@rm -f $(OBJ)
+				@rm -Rf obj
+
+all: $(NAME)
+
+clean:
+				@$(RM) $(OBJ)
+				@make clean -C $(LIBFT)
+
+fclean: clean
+				@${RM} libftprintf.a
+				@make fclean -C $(LIBFT)
+
+re: fclean all
+
+.PHONY: all clean fclean re .c .o
